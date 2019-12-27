@@ -1,0 +1,33 @@
+<div class="container">
+  <div [hidden]="submitted">
+    <form (ngSubmit)="onSubmit()" #primesForm="ngForm">
+
+      <div class="form-group">
+        <label for="name">Enter a number to find Primes:</label>
+        <input type="number" min="1" max="1000000" class="form-control" id="numFind" required [(ngModel)]="numFind" name="numFind" #name="ngModel">
+      </div>
+
+      <div class="form-group">
+        <label for="alterEgo">Enter the number of times to call endpoint:</label>
+        <input type="number" min="1" max="20" class="form-control" id="numCalls" required [(ngModel)]="numCalls" name="numCalls" #name="ngModel">
+      </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="!primesForm.form.valid">Submit</button>
+      &nbsp;
+      <button type="button" class="btn btn-default" (click)="onReset(); primesForm.reset()">Reset</button>
+    </form>
+  </div>
+
+  <div [hidden]="!submitted">
+    <div class="row">
+      <div class="col-xs-3">Finding primes for:</div>
+      <div class="col-xs-9">{{ numFind }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Number of calls to endpoint:</div>
+      <div class="col-xs-9">{{ numCalls }}</div>
+    </div>
+    <br>
+    <button type="button" class="btn btn-default" (click)="submitted=false">Reset</button>
+  </div>
+</div>
