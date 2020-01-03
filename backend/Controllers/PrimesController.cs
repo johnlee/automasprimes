@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ecsautobalancer.Controllers
+namespace automasprimes.Controllers
 {
     [Route("primes")]
-    public class HomeController : Controller
+    public class PrimesController : Controller
     {
+        const int MAXNUMBER = 1999999;
+
         [HttpGet]
         public ActionResult Get()
         {
-            return Get(100000);
+            return Get(1000);
         }
 
         [HttpGet("{number}")]
@@ -20,7 +22,13 @@ namespace ecsautobalancer.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var primes = FindPrimeNumbersInN(number);
+            var n = number;
+            if (number > MAXNUMBER || number == 0) // lets not get carried away...
+            {
+                n = MAXNUMBER;
+            }
+
+            var primes = ReallyInefficientWayToSeeIfNIsPrime(n);
 
             stopwatch.Stop();
 
@@ -34,25 +42,19 @@ namespace ecsautobalancer.Controllers
             var result = new
             {
                 ContainerId = containerid,
-                ElapsedTime = elapsedtime,
+                GivenNumber = n,
                 NumberOfPrimes = primes.Count,
-                PrimeNumbers = primes
+                ElapsedTime = elapsedtime
             };
             return Ok(result);
         }
 
-        private List<int> FindPrimeNumbersInN(int n)
+        private List<int> ReallyInefficientWayToSeeIfNIsPrime(int n)
         {
             List<int> results = new List<int>();
-
-            if (n > 1999999) // lets not get carried away...
-            {
-                return results;
-            }
-            
             for (int p = 2; p <= n; p++)
             {
-                if (IsPrime(p))
+                if (HasNoDivisibleNumbers(p))
                 {
                     results.Add(p);
                 }
@@ -60,7 +62,7 @@ namespace ecsautobalancer.Controllers
             return results;
         }
 
-        private bool IsPrime(int n)
+        private bool HasNoDivisibleNumbers(int n)
         {
             if (n <= 1)
             {
@@ -68,14 +70,15 @@ namespace ecsautobalancer.Controllers
             }
             else
             {
+                int numberOfDivisibles = 0;
                 for (int i = 2; i < n; i++ )
                 {
                     if (n % i == 0)
                     {
-                        return false;
+                        numberOfDivisibles++;
                     }
                 }
-                return true;
+                return numberOfDivisibles == 0;
             }
         }
     }

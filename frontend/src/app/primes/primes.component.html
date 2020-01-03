@@ -31,3 +31,24 @@
     <button type="button" class="btn btn-default" (click)="submitted=false">Reset</button>
   </div>
 </div>
+<br>
+<div *ngIf="submitted" class="container">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Call Number</th>
+      <th scope="col">Container ID</th>
+      <th scope="col">Number of Primes</th>
+      <th scope="col">Execution Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of primes; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ p.containerId || 0 }}</td>
+      <td>{{ p.numberOfPrimes }}</td>
+      <td>{{ p.elapsedTime }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

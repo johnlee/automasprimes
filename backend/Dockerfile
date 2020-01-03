@@ -5,16 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
-COPY ecsautobalancer.csproj ./
-RUN dotnet restore "./ecsautobalancer.csproj"
+COPY automasprimes.csproj ./
+RUN dotnet restore "./automasprimes.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "ecsautobalancer.csproj" -c Release -o /app/build
+RUN dotnet build "automasprimes.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ecsautobalancer.csproj" -c Release -o /app/publish
+RUN dotnet publish "automasprimes.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ecsautobalancer.dll"]
+ENTRYPOINT ["dotnet", "automasprimes.dll"]

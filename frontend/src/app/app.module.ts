@@ -4,13 +4,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientXsrfModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { RequestCache, RequestCacheWithMap } from './request-cache.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PrimesComponent } from './primes/primes.component';
 import { MessagesComponent } from './messages/messages.component';
+import { HttpErrorHandler } from './http-error-handler.service';
+import { MessagesService } from './messages/messages.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,11 @@ import { MessagesComponent } from './messages/messages.component';
       }
     )
   ],
-  providers: [],
+  providers: [
+    HttpErrorHandler,
+    MessagesService,
+    { provide: RequestCache, useClass: RequestCacheWithMap },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
