@@ -30,10 +30,10 @@ export class PrimesService {
     const url = `${baseUrl}/primes/${n}`;
     //httpOptions.headers = httpOptions.headers.set('Authorization', 'my-new-auth-token');
     //return this.http.get<Primes[]>(url, httpOptions)
-    //return this.http.get<Primes>(url)
-    //  .pipe(
-    //    catchError(this.handleError('getPrimes'))
-    //  );
-    return this.http.get(`${url}`);
+
+    return this.http.get(`${url}`)
+      .pipe(
+        catchError(this.handleError('getPrimes'))
+      );
   }
 }

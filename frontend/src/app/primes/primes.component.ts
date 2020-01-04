@@ -12,11 +12,13 @@ import { PrimesService } from './primes.service';
 })
 export class PrimesComponent implements OnInit {
   primes: Primes[];
-
-  url = "http://johns-internet-app-lb-2107860646.us-west-2.elb.amazonaws.com";
+  url: string;
   numFind: number;
   numCalls: number;
-  submitted = false;
+  submitted: boolean;
+  callsCompleted: number;
+
+  progressbar = 0;
 
   constructor(private service: PrimesService) { }
 
@@ -27,18 +29,25 @@ export class PrimesComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
     console.log('Calling...');
-    this.service.getPrimes(this.numFind, this.url).subscribe(result => {
-      console.log('Result = ' + JSON.stringify(result));
-      var p = result as Primes;
-      if (p) { 
-        this.primes.push(p); 
-      }
-    });
+    for (var i = 0; i < this.numCalls; i++) {
+      this.service.getPrimes(this.numFind, this.url).subscribe(result => {
+        console.log('Result = ' + JSON.stringify(result));
+        var p = result as Primes;
+        if (p) {
+          this.primes.push(p);
+          this.callsCompleted++;
+          this.progressbar += 10;
+        }
+      });
+    }
   }
 
   onReset(): void {
-    this.numCalls = 1;
-    this.numFind = 1;
+    this.primes = new Array<Primes>();
+    this.url = "http://johns-internet-app-lb-2107860646.us-west-2.elb.amazonaws.com";
+    this.numCalls = 10;
+    this.numFind = 50000;
     this.submitted = false;
+    this.callsCompleted = 0;
   }
 }

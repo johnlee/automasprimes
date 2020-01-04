@@ -22,21 +22,33 @@
 
       <button type="submit" class="btn btn-success" [disabled]="!primesForm.form.valid">Submit</button>
       &nbsp;
-      <button type="button" class="btn btn-default" (click)="onReset(); primesForm.reset()">Reset</button>
+      <button type="button" class="btn btn-default" (click)="onReset();">Reset</button>
     </form>
   </div>
 
   <div [hidden]="!submitted">
     <div class="row">
-      <div class="col-xs-3">Finding primes for:</div>
+      <div class="col-xs-3">Url:</div>
+      <div class="col-xs-9">{{ url }}</div>
+    </div>    
+    <div class="row">
+      <div class="col-xs-3">N:</div>
       <div class="col-xs-9">{{ numFind }}</div>
     </div>
     <div class="row">
-      <div class="col-xs-3">Number of calls to endpoint:</div>
+      <div class="col-xs-3">Calls to make:</div>
       <div class="col-xs-9">{{ numCalls }}</div>
     </div>
+    <div class="row">
+      <div class="col-xs-3">Calls Completed:</div>
+      <div class="col-xs-9">{{ callsCompleted }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Calls Remaining:</div>
+      <div class="col-xs-9">{{ numCalls - callsCompleted }}</div>
+    </div>    
     <br>
-    <button type="button" class="btn btn-default" (click)="submitted=false">Reset</button>
+    <button type="button" class="btn btn-default" (click)="onReset();">Reset</button>
   </div>
 </div>
 <br>
@@ -53,9 +65,17 @@
     <tbody>
     <tr *ngFor="let p of primes; index as i">
       <td>{{ i + 1 }}</td>
-      <td>{{ p.containerId || 0 }}</td>
+      <td>{{ p.containerId }}</td>
       <td>{{ p.numberOfPrimes }}</td>
       <td>{{ p.elapsedTime }}</td>
+    </tr>
+    <tr *ngIf="numCalls - callsCompleted != 0">
+      <td></td>
+      <td>
+        Waiting...
+      </td>
+      <td></td>
+      <td></td>
     </tr>
     </tbody>
   </table>
