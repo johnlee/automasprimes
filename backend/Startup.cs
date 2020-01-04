@@ -28,6 +28,8 @@ namespace automasprimes
         {
             services.AddControllers();
 
+            services.AddCors();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -42,6 +44,20 @@ namespace automasprimes
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                //options.WithOrigins("http://localhost:4200", "http://amazonaws.com").AllowAnyHeader().AllowAnyMethod();
+            });
+
+            // CORS not working for some reason. Brute forcing it.
+            app.Use((context, next) =>
+            {
+                context.Response.Headers["Access-Control-Allow-Origin"] = "http://localhost:4200, http://amazonaws.com";
+                context.Response.Headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE";
+                return next.Invoke();
+            });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

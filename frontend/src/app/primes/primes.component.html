@@ -3,13 +3,21 @@
     <form (ngSubmit)="onSubmit()" #primesForm="ngForm">
 
       <div class="form-group">
-        <label for="name">Enter a number to find Primes:</label>
-        <input type="number" min="1" max="1000000" class="form-control" id="numFind" required [(ngModel)]="numFind" name="numFind" #name="ngModel">
+        <label for="url">Enter Primes Url:</label>
+        <input type="text" id="url" name="url" #name="ngModel" class="form-control" 
+          pattern="http://.*" size="50" required [(ngModel)]="url">
       </div>
 
       <div class="form-group">
-        <label for="alterEgo">Enter the number of times to call endpoint:</label>
-        <input type="number" min="1" max="20" class="form-control" id="numCalls" required [(ngModel)]="numCalls" name="numCalls" #name="ngModel">
+        <label for="name">Enter a number N (1-1000000):</label>
+        <input type="number" id="numFind" name="numFind" #name="ngModel" 
+          min="1" max="1000000" class="form-control" required [(ngModel)]="numFind">
+      </div>
+
+      <div class="form-group">
+        <label for="alterEgo">Enter number of calls to make (1-20):</label>
+        <input type="number" id="numCalls" name="numCalls" #name="ngModel" 
+          min="1" max="20" class="form-control" required [(ngModel)]="numCalls">
       </div>
 
       <button type="submit" class="btn btn-success" [disabled]="!primesForm.form.valid">Submit</button>

@@ -1,7 +1,7 @@
 export class Primes {
   id: number;
   containerId: string;
-  elapsedTime:  string;
+  givenNumber: number;
   numberOfPrimes: number;
-  primeNumbers: number[];
+  elapsedTime:  string;
 }

@@ -18,7 +18,6 @@ const httpOptions = {
 
 @Injectable()
 export class PrimesService {
-  baseUrl = 'api/primes';  // URL to web api
   private handleError: HandleError;
 
   constructor(
@@ -27,13 +26,14 @@ export class PrimesService {
     this.handleError = httpErrorHandler.createHandleError('PrimesService');
   }
 
-  getPrimes (n: number): Observable<Primes> {
-    const url = `${this.baseUrl}/${n}`;
+  getPrimes (n: number, baseUrl: string): Observable<Object> {
+    const url = `${baseUrl}/primes/${n}`;
     //httpOptions.headers = httpOptions.headers.set('Authorization', 'my-new-auth-token');
     //return this.http.get<Primes[]>(url, httpOptions)
-    return this.http.get<Primes>(url)
-      .pipe(
-        catchError(this.handleError('getPrimes'))
-      );
+    //return this.http.get<Primes>(url)
+    //  .pipe(
+    //    catchError(this.handleError('getPrimes'))
+    //  );
+    return this.http.get(`${url}`);
   }
 }

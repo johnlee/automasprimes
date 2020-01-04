@@ -13,6 +13,7 @@ import { PrimesService } from './primes.service';
 export class PrimesComponent implements OnInit {
   primes: Primes[];
 
+  url = "http://johns-internet-app-lb-2107860646.us-west-2.elb.amazonaws.com";
   numFind: number;
   numCalls: number;
   submitted = false;
@@ -26,9 +27,12 @@ export class PrimesComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
     console.log('Calling...');
-    this.service.getPrimes(this.numFind).subscribe(result => {
+    this.service.getPrimes(this.numFind, this.url).subscribe(result => {
       console.log('Result = ' + JSON.stringify(result));
-      if (result) { this.primes.push(result.); }
+      var p = result as Primes;
+      if (p) { 
+        this.primes.push(p); 
+      }
     });
   }
 
